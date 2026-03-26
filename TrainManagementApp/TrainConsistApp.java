@@ -1,16 +1,15 @@
 import java.util.*;
+import java.util.stream.*;
 
 class Bogie {
     private String name;
     private int capacity;
 
-    // Constructor
     public Bogie(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
     }
 
-    // Getters
     public String getName() {
         return name;
     }
@@ -19,7 +18,6 @@ class Bogie {
         return capacity;
     }
 
-    // Display method
     @Override
     public String toString() {
         return name + " - Capacity: " + capacity;
@@ -28,26 +26,19 @@ class Bogie {
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-
-        // Create list of bogies
         List<Bogie> bogieList = new ArrayList<>();
 
-        // Add passenger bogies
         bogieList.add(new Bogie("Sleeper", 72));
         bogieList.add(new Bogie("AC Chair", 56));
         bogieList.add(new Bogie("First Class", 24));
 
-        System.out.println("Before Sorting:");
-        for (Bogie b : bogieList) {
-            System.out.println(b);
-        }
+        System.out.println("Original Bogies:");
+        bogieList.forEach(System.out::println);
 
-        // Sort using Comparator (by capacity)
-        bogieList.sort(Comparator.comparingInt(Bogie::getCapacity));
+        List<Bogie> filteredList = bogieList.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
 
-        System.out.println("\nAfter Sorting (by Capacity):");
-        for (Bogie b : bogieList) {
-            System.out.println(b);
-        }
-    }
+        System.out.println("\nFiltered Bogies (Capacity > 60):");
+        filteredList.forEach(System.out::println);}
 }
