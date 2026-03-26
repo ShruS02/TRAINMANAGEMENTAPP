@@ -1,50 +1,49 @@
 import java.util.*;
 
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String message) {
-        super(message);
-    }
-}
+class GoodsBogie {
+    private String type;
+    private String cargo;
 
-class Bogie {
-    private String name;
-    private int capacity;
-
-    public Bogie(String name, int capacity) throws InvalidCapacityException {
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be greater than zero");
-        }
-        this.name = name;
-        this.capacity = capacity;
+    public GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getCargo() {
+        return cargo;
     }
 
     @Override
     public String toString() {
-        return name + " - Capacity: " + capacity;
+        return type + " - Cargo: " + cargo;
     }
 }
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-        List<Bogie> bogieList = new ArrayList<>();
+        List<GoodsBogie> goodsList = new ArrayList<>();
 
-        try {
-            bogieList.add(new Bogie("Sleeper", 72));
-            bogieList.add(new Bogie("AC Chair", 56));
-            bogieList.add(new Bogie("First Class", 0));
-        } catch (InvalidCapacityException e) {
-            System.out.println(e.getMessage());
+        goodsList.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsList.add(new GoodsBogie("Rectangular", "Coal"));
+        goodsList.add(new GoodsBogie("Cylindrical", "Petroleum"));
+
+        System.out.println("Goods Bogies:");
+        goodsList.forEach(System.out::println);
+
+        boolean isSafe = goodsList.stream()
+                .allMatch(b ->
+                        !b.getType().equalsIgnoreCase("Cylindrical") ||
+                                b.getCargo().equalsIgnoreCase("Petroleum")
+                );
+
+        if (isSafe) {
+            System.out.println("\nTrain is Safety Compliant");
+        } else {
+            System.out.println("\nTrain is NOT Safety Compliant");
         }
-
-        System.out.println("Valid Bogies:");
-        bogieList.forEach(System.out::println);
     }
 }
