@@ -31,14 +31,18 @@ public class TrainConsistApp {
         bogieList.add(new Bogie("Sleeper", 72));
         bogieList.add(new Bogie("AC Chair", 56));
         bogieList.add(new Bogie("First Class", 24));
+        bogieList.add(new Bogie("Sleeper", 70));
 
         System.out.println("Original Bogies:");
         bogieList.forEach(System.out::println);
 
-        List<Bogie> filteredList = bogieList.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
+        Map<String, List<Bogie>> groupedBogies = bogieList.stream()
+                .collect(Collectors.groupingBy(Bogie::getName));
 
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        filteredList.forEach(System.out::println);}
+        System.out.println("\nGrouped Bogies:");
+        groupedBogies.forEach((type, list) -> {
+            System.out.println(type + ":");
+            list.forEach(System.out::println);
+        });
+    }
 }
