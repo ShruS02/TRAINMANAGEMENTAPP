@@ -1,43 +1,49 @@
 import java.util.*;
 
-class Bogie {
-    private String name;
-    private int capacity;
+class GoodsBogie {
+    private String type;
+    private String cargo;
 
-    public Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
+    public GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getCargo() {
+        return cargo;
     }
 
     @Override
     public String toString() {
-        return name + " - Capacity: " + capacity;
+        return type + " - Cargo: " + cargo;
     }
 }
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-        List<Bogie> bogieList = new ArrayList<>();
+        List<GoodsBogie> goodsList = new ArrayList<>();
 
-        bogieList.add(new Bogie("Sleeper", 72));
-        bogieList.add(new Bogie("AC Chair", 56));
-        bogieList.add(new Bogie("First Class", 24));
+        goodsList.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsList.add(new GoodsBogie("Rectangular", "Coal"));
+        goodsList.add(new GoodsBogie("Cylindrical", "Petroleum"));
 
-        System.out.println("Bogies:");
-        bogieList.forEach(System.out::println);
+        System.out.println("Goods Bogies:");
+        goodsList.forEach(System.out::println);
 
-        int totalCapacity = bogieList.stream()
-                .map(Bogie::getCapacity)
-                .reduce(0, Integer::sum);
+        boolean isSafe = goodsList.stream()
+                .allMatch(b ->
+                        !b.getType().equalsIgnoreCase("Cylindrical") ||
+                                b.getCargo().equalsIgnoreCase("Petroleum")
+                );
 
-        System.out.println("\nTotal Seating Capacity: " + totalCapacity);
+        if (isSafe) {
+            System.out.println("\nTrain is Safety Compliant");
+        } else {
+            System.out.println("\nTrain is NOT Safety Compliant");
+        }
     }
 }
