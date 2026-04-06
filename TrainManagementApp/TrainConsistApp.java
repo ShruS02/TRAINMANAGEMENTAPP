@@ -1,48 +1,19 @@
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
-
-class GoodsBogie {
-    private String shape;
-    private String cargo;
-
-    public GoodsBogie(String shape) {
-        this.shape = shape;
-    }
-
-    public void assignCargo(String cargoType) {
-        try {
-            if (shape.equalsIgnoreCase("Rectangular") &&
-                    cargoType.equalsIgnoreCase("Petroleum")) {
-                throw new CargoSafetyException("Unsafe cargo! Petroleum cannot be assigned to Rectangular bogie.");
-            }
-            this.cargo = cargoType;
-            System.out.println("Cargo assigned successfully: " + cargoType);
-        } catch (CargoSafetyException e) {
-            System.out.println("Error: " + e.getMessage());
-        } finally {
-            System.out.println("Cargo assignment attempt completed for " + shape + " bogie.\n");
-        }
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-}
-
 public class TrainConsistApp {
     public static void main(String[] args) {
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        b1.assignCargo("Petroleum");
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
-        b2.assignCargo("Petroleum");
+        for (int i = 0; i < capacities.length - 1; i++) {
+            for (int j = 0; j < capacities.length - i - 1; j++) {
+                if (capacities[j] > capacities[j + 1]) {
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
 
-        GoodsBogie b3 = new GoodsBogie("Rectangular");
-        b3.assignCargo("Grain");
-
-        System.out.println("Program continues safely after handling exceptions.");
+        for (int c : capacities) {
+            System.out.print(c + " ");
+        }
     }
 }
