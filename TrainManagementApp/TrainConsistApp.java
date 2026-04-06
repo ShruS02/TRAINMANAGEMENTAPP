@@ -1,49 +1,48 @@
-import java.util.*;
+class CargoSafetyException extends RuntimeException {
+    public CargoSafetyException(String message) {
+        super(message);
+    }
+}
 
 class GoodsBogie {
-    private String type;
+    private String shape;
     private String cargo;
 
-    public GoodsBogie(String type, String cargo) {
-        this.type = type;
-        this.cargo = cargo;
+    public GoodsBogie(String shape) {
+        this.shape = shape;
     }
 
-    public String getType() {
-        return type;
+    public void assignCargo(String cargoType) {
+        try {
+            if (shape.equalsIgnoreCase("Rectangular") &&
+                    cargoType.equalsIgnoreCase("Petroleum")) {
+                throw new CargoSafetyException("Unsafe cargo! Petroleum cannot be assigned to Rectangular bogie.");
+            }
+            this.cargo = cargoType;
+            System.out.println("Cargo assigned successfully: " + cargoType);
+        } catch (CargoSafetyException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            System.out.println("Cargo assignment attempt completed for " + shape + " bogie.\n");
+        }
     }
 
     public String getCargo() {
         return cargo;
     }
-
-    @Override
-    public String toString() {
-        return type + " - Cargo: " + cargo;
-    }
 }
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-        List<GoodsBogie> goodsList = new ArrayList<>();
+        GoodsBogie b1 = new GoodsBogie("Cylindrical");
+        b1.assignCargo("Petroleum");
 
-        goodsList.add(new GoodsBogie("Cylindrical", "Petroleum"));
-        goodsList.add(new GoodsBogie("Rectangular", "Coal"));
-        goodsList.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        GoodsBogie b2 = new GoodsBogie("Rectangular");
+        b2.assignCargo("Petroleum");
 
-        System.out.println("Goods Bogies:");
-        goodsList.forEach(System.out::println);
+        GoodsBogie b3 = new GoodsBogie("Rectangular");
+        b3.assignCargo("Grain");
 
-        boolean isSafe = goodsList.stream()
-                .allMatch(b ->
-                        !b.getType().equalsIgnoreCase("Cylindrical") ||
-                                b.getCargo().equalsIgnoreCase("Petroleum")
-                );
-
-        if (isSafe) {
-            System.out.println("\nTrain is Safety Compliant");
-        } else {
-            System.out.println("\nTrain is NOT Safety Compliant");
-        }
+        System.out.println("Program continues safely after handling exceptions.");
     }
 }
