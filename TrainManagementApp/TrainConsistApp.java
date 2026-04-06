@@ -1,34 +1,52 @@
-import java.util.Arrays;
+import java.util.*;
+
+class Bogie {
+    private String id;
+
+    public Bogie(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+}
+
+class Train {
+    private List<Bogie> bogies = new ArrayList<>();
+
+    public void addBogie(Bogie bogie) {
+        bogies.add(bogie);
+    }
+
+    public Bogie searchBogie(String id) {
+        if (bogies.isEmpty()) {
+            throw new IllegalStateException("Search cannot be performed: No bogies available in the train.");
+        }
+        for (Bogie b : bogies) {
+            if (b.getId().equals(id)) {
+                return b;
+            }
+        }
+        return null;
+    }
+}
 
 public class TrainConsistApp {
     public static void main(String[] args) {
-        String[] bogieIds = {"BG101","BG205","BG309","BG412","BG550"};
-        String searchKey = "BG309";
-
-        Arrays.sort(bogieIds);
-
-        int low = 0;
-        int high = bogieIds.length - 1;
-        boolean found = false;
-
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            int result = searchKey.compareTo(bogieIds[mid]);
-
-            if (result == 0) {
-                found = true;
-                break;
-            } else if (result > 0) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
+        Train train = new Train();
+        try {
+            train.searchBogie("B1");
+        } catch (IllegalStateException e) {
+            System.out.println(e.getMessage());
         }
-
-        if (found) {
-            System.out.println("Bogie ID found");
+        train.addBogie(new Bogie("B1"));
+        train.addBogie(new Bogie("B2"));
+        Bogie result = train.searchBogie("B1");
+        if (result != null) {
+            System.out.println(result.getId());
         } else {
-            System.out.println("Bogie ID not found");
+            System.out.println("Bogie not found");
         }
     }
 }
